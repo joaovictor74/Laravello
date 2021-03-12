@@ -10,7 +10,13 @@
             <div class="flex flex-1 items-start overflow-x-auto mx-2">
                 <div class="bg-gray-300 rounded-sm p-2 mr-2 list">
                     <div class="flex justify-between">
-                        <div class="text-gray-800 pl-2 pb-2 font-bold">List Title</div>
+                        <div class="text-gray-800 pl-2 pb-2 font-bold">List Title</div>                        
+                    </div>
+                    <div class="bg-white rounded-sm p-2 cursor-pointer text-sm hover:bg-gray-100 mb-2 card">
+                            xxx
+                    </div>
+                    <div class="rounded-sm p-2 text-gray-600 cursor-pointer hover:bg-gray-400 hover:text-gray-800 text-sm">
+                        Add new Card
                     </div>
                 </div>
             </div>
@@ -23,6 +29,9 @@
     }
     .list{
         width:250px;
+    }
+    .card{
+        box-shadow: 0 1px 0 rgba(0, 30, 66, 0.25);
     }
 </style>
 <script>

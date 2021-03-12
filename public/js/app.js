@@ -1935,6 +1935,15 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({});
 
 /***/ }),
@@ -6393,7 +6402,7 @@ exports = module.exports = __webpack_require__(/*! ../../node_modules/css-loader
 
 
 // module
-exports.push([module.i, ".header[data-v-36375f90]{\n  height:40px;\n}\n.list[data-v-36375f90]{\n  width:250px;\n}\n", ""]);
+exports.push([module.i, ".header[data-v-36375f90]{\n  height:40px;\n}\n.list[data-v-36375f90]{\n  width:250px;\n}\n.card[data-v-36375f90]{\n  box-shadow: 0 1px 0 rgba(0, 30, 66, 0.25);\n}\n", ""]);
 
 // exports
 
@@ -38304,7 +38313,33 @@ var staticRenderFns = [
                         { staticClass: "text-gray-800 pl-2 pb-2 font-bold" },
                         [_vm._v("List Title")]
                       )
-                    ])
+                    ]),
+                    _vm._v(" "),
+                    _c(
+                      "div",
+                      {
+                        staticClass:
+                          "bg-white rounded-sm p-2 cursor-pointer text-sm hover:bg-gray-100 mb-2 card"
+                      },
+                      [
+                        _vm._v(
+                          "\n                        xxx\n                "
+                        )
+                      ]
+                    ),
+                    _vm._v(" "),
+                    _c(
+                      "div",
+                      {
+                        staticClass:
+                          "rounded-sm p-2 text-gray-600 cursor-pointer hover:bg-gray-400 hover:text-gray-800 text-sm"
+                      },
+                      [
+                        _vm._v(
+                          "\n                    Add new Card\n                "
+                        )
+                      ]
+                    )
                   ]
                 )
               ]
@@ -50671,8 +50706,8 @@ window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! C:\wamp64\www\laravello\laravello\resources\js\app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! C:\wamp64\www\laravello\laravello\resources\css\app.css */"./resources/css/app.css");
+__webpack_require__(/*! C:\wamp64\www\laravello\resources\js\app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! C:\wamp64\www\laravello\resources\css\app.css */"./resources/css/app.css");
 
 
 /***/ })
