@@ -11,8 +11,25 @@ const mix = require('laravel-mix');
  |
  */
 
+ mix.extend(
+  'graphql',
+  new class{
+    dependecies(){
+      return ['graphql','graphql-tag']
+    }
+
+    webpackRules(){
+      return {
+        test:/\.(grapgql|gql)$/,
+        exclude:/node_modules/,
+        loader:'graphql-tag/loader'
+      }
+    }
+  }()
+);
 
 mix.js('resources/js/app.js', 'public/js')
     .postCss('resources/css/app.css', 'public/css',[
       require('tailwindcss')
    ]);
+mix.graphql();

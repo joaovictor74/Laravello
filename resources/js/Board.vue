@@ -11,7 +11,7 @@
                 <span v-else>{{ board.title}}</span>
             </div>
             <div class="flex flex-1 items-start overflow-x-auto mx-2" v-if="board">
-                        <List v-for="list in board.lists" :key="list.id" :list="list"></List>    
+                 <List v-for="list in board.lists" :key="list.id" :list="list"></List>    
             </div>
         </div>
     </div>
@@ -22,31 +22,15 @@
     }
 </style>
 <script>
-    import gql from 'graphql-tag';
     import List from './components/List.vue';
+    import BoardQuery from "./graphql/BoardWithListsAndCards.gql";
     export default {
         components:{
             List
         },
         apollo:{
             board:{
-                query:gql`
-                    query($id: ID!){
-                        board(id: $id){
-                            title
-                            color
-                            lists{
-                                id
-                                title
-                                cards{
-                                    id
-                                    title
-                                    order
-                                }
-                            }
-                        }
-                    }
-                `,
+                query:BoardQuery,
                 variables:{
                     id:1
                 }
