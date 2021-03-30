@@ -18,49 +18,38 @@
 </template>
 <script>
 import CardAdd from "./../graphql/CardAdd.gql"
-import BoardQuery from "./../graphql/BoardWithListsAndCards.gql"
-
 export default {  
     props: {
         list: Object
     },  
-    data () {
+    data() {
         return{
             title:null
         };
-    },mounted () {
+    },
+    mounted() {
         this.$refs.card.focus();
     },
     methods: {
-        addCard () {            
+        addCard() {            
             const self = this;
-            this.$apollo.mutate ({
-                mutation:CardAdd,
-                variables:{
+            this.$apollo.mutate( {
+                mutation: CardAdd,
+                variables:  {
                     title: this.title,
                     listId: this.list.id,
                     order: this.list.cards.length + 1
                 },
-                update (store,{data:{cardAdd}}){
-                    const data = store.readQuery({
-                        query:BoardQuery,
-                        variables:{
-                            id: Number(self.list.board_id)  
-                        }
+                update (store,{data: {cardAdd}}) {
+                    self.$emit("added", {
+                        store,
+                        data: cardAdd
                     });
-                    
-                    data.board.lists.find (list => list.id == self.list.id).cards.push(cardAdd);
-                    store.writeQuery({
-                        query:BoardQuery,
-                        data
-                    });
-
-                    store.writeQuery ({query:BoardQuery,data});                    
-                }
-            });
-            this.closed();
+                    self.closed();
+                }                
+            });           
         },
-        closed () {
+        closed() {
             this.$emit("closed");
         }
     }

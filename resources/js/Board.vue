@@ -11,7 +11,7 @@
                 <span v-else>{{ board.title}}</span>
             </div>
             <div class="flex flex-1 items-start overflow-x-auto mx-2" v-if="board">
-                 <List v-for="list in board.lists" :key="list.id" :list="list"></List>    
+                 <List v-for="list in board.lists" :key="list.id" :list="list" @card-added="updateQueryCache($event)"></List>    
             </div>
         </div>
     </div>
@@ -22,20 +22,38 @@
     }
 </style>
 <script>
-    import List from './components/List.vue';
-    import BoardQuery from "./graphql/BoardWithListsAndCards.gql";
-    export default {
-        components:{
-            List
-        },
-        apollo:{
-            board:{
-                query:BoardQuery,
-                variables:{
-                    id:1
-                }
+import List from './components/List.vue';
+import BoardQuery from "./graphql/BoardWithListsAndCards.gql";
+export default {
+    components: {
+        List
+    },
+    apollo: {
+        board: {
+            query:BoardQuery,
+            variables: {
+                id: 1
             }
         }
+    },
+    methods: {
+        updateQueryCache(event) {
+            const data = event.store.readQuery({ 
+                query: BoardQuery,
+                variables: {
+                    id: Number(this.board.id)  
+                }
+            });
+                
+            data.board.lists
+                .find (list => list.id == event.listId)
+                .cards.push(event.data);
+            
+            event.store.writeQuery({
+                query:BoardQuery,
+                data
+            });   
+        }
     }
-
+}
 </script>

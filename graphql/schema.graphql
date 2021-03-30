@@ -13,8 +13,9 @@ type Query {
     board(id: ID! @eq): Board @find
 }
 
-type Mutation{
+type Mutation {
     cardAdd(input:CardAddInput! @spread): Card! @create
+    cardDelete(id:ID!): Card @delete
 }
 
 type User {
@@ -27,17 +28,17 @@ type User {
     cards:[Card!]! @hasMany
 }
 
-type Board{
-    id:ID!    
+type Board {
+    id: ID!    
     created_at: DateTime!
     updated_at: DateTime!
-    title:String!
-    color:String!
-    lists:[CardList!]! @hasMany
-    owner:User! @belongsTo
+    title: String!
+    color: String!
+    lists: [CardList!]! @hasMany
+    owner: User! @belongsTo
 }
 
-type CardList{
+type CardList {
     id: ID!    
     created_at: DateTime!
     updated_at: DateTime!
@@ -47,19 +48,19 @@ type CardList{
     board_id: ID!
 }
 
-type Card{
-    id:ID!    
+type Card  {
+    id: ID!    
     created_at: DateTime!
     updated_at: DateTime!
-    title:String!
-    order:Int!
-    list:CardList! @belongsTo
-    owner:User! @belongsTo
+    title: String!
+    order: Int!
+    list: CardList! @belongsTo
+    owner: User! @belongsTo
 }
 
-input CardAddInput{
-    title:String!,
-    order:Int!,
-    list_id:ID!,
-    owner_id:ID!
+input CardAddInput {
+    title: String!,
+    order: Int!,
+    list_id: ID!,
+    owner_id: ID!
 }
