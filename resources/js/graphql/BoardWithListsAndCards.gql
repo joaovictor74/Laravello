@@ -3,11 +3,11 @@ query BoardWithListsAndCards($id: ID!) {
         id
         title
         color
-        lists{
+        lists {
             id
             title
             board_id
-            cards{
+            cards {
                 id
                 title
                 order
