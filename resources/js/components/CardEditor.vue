@@ -2,11 +2,11 @@
     <div>
         <textarea
             placeholder="Enter a title for this card..."
-            :value="title"
+            :value="value"
             ref="card"
             @keyup.esc="closed"
             @keyup.enter="saved"
-            @input="$emit('input',$event.target.value)"
+            @input="$emit('input', $event.target.value)"
             class="rounded-md shadow-card py-1 px-2 outline-none w-full text-gray-900 text-sm bg-white h-16 resize-none"
         ></textarea>
         <div class="flex">
@@ -14,7 +14,7 @@
                 @click="saved"
                 class="rounded-sm py-1 px-3 bg-indigo-700 text-white cursor-pointer hover:bg-indigo-600 outline-none"
             >
-                Add Card
+                {{ label }}
             </button>
             <button
                 @click="closed"
@@ -27,7 +27,7 @@
 </template>
 <script>
 export default {
-    props: ["value"],    
+    props: ["value", "label"],
     mounted() {
         this.$refs.card.focus();
     },
@@ -35,7 +35,7 @@ export default {
         closed() {
             this.$emit("closed");
         },
-        saved(){
+        saved() {
             this.$emit("saved");
         }
     }

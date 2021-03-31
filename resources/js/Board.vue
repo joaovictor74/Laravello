@@ -24,6 +24,7 @@
                     :list="list"
                     @card-added="updateQueryCache($event)"
                     @card-deleted="updateQueryCache($event)"
+                    @card-updated="updateQueryCache($event)"
                 ></List>
             </div>
         </div>
@@ -36,7 +37,11 @@
 </style>
 <script>
 import List from "./components/List.vue";
-import { EVENT_CARD_ADDED, EVENT_CARD_DELETED } from "./constants";
+import {
+    EVENT_CARD_ADDED,
+    EVENT_CARD_DELETED,
+    EVENT_CARD_UPDATED
+} from "./constants";
 import BoardQuery from "./graphql/BoardWithListsAndCards.gql";
 export default {
     components: {
@@ -69,6 +74,11 @@ export default {
                     listById().cards = listById().cards.filter(
                         card => card.id != event.data.id
                     );
+                    break;
+                case EVENT_CARD_UPDATED:
+                    listById().cards.filter(card => 
+                        card.id == event.data.id
+                    ).title = event.data.title;
                     break;
             }
 
