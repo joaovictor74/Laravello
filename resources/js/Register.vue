@@ -6,19 +6,20 @@
             </div>
             <div class="w-full sm:shadow-xl sm:bg-white sm:py-8 sm:px-12">
                 <div class="w-full text-center text-gray-600 font-bold mb-8">
-                    Log In to Laravello
+                    Sign Up to your account
                 </div>
                 <form action="">
                     <FormInput type="email" placeholder="Enter Email" />
-                    <FormInput type="password" placeholder="Enter password" />
-                    <FormButton text="Login" />
+                    <FormInput type="text" placeholder="Enter the Full Name" />
+                    <FormInput type="password" placeholder="Enter Password" />
+                    <FormButton text="Submit" />
                 </form>
                 <hr class="bg-gray-400 h-px w-full mb-6" />
                 <div class="text-center text-sm">
                     <router-link
-                        :to="{ name: 'register' }"
+                        :to="{ name: 'login' }"
                         class="text-blue-600 hover:underline"
-                        >Sign Up for an account</router-link
+                        >Already have an account? Log In</router-link
                     >
                 </div>
             </div>
