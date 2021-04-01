@@ -76,8 +76,8 @@ export default {
                     );
                     break;
                 case EVENT_CARD_UPDATED:
-                    listById().cards.filter(card => 
-                        card.id == event.data.id
+                    listById().cards.filter(
+                        card => card.id == event.data.id
                     ).title = event.data.title;
                     break;
             }

@@ -1,5 +1,10 @@
 <template>
-    <CardEditor v-model="title" @closed="closed" @saved="addCard" label="Add Card"></CardEditor>
+    <CardEditor
+        v-model="title"
+        @closed="closed"
+        @saved="addCard"
+        label="Add Card"
+    ></CardEditor>
 </template>
 
 <script>
@@ -7,7 +12,7 @@ import CardAdd from "./../graphql/CardAdd.gql";
 import { EVENT_CARD_ADDED } from "./../constants.js";
 import CardEditor from "./CardEditor";
 export default {
-    components:{
+    components: {
         CardEditor
     },
     props: {
