@@ -28,16 +28,13 @@ import CardAddButton from "./CardAddButton.vue";
 import Card from "./Card.vue";
 
 export default {
-    prop: {
+    props: {
         list: Object
     },
     components: {
+        Card,
         CardAddEditor,
-        CardAddButton,
-        Card
-    },
-    props: {
-        list: Object
+        CardAddButton
     },
     data() {
         return {

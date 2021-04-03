@@ -4,15 +4,14 @@
             :type="type"
             class="rounded-sm px-4 py-2 outline-none focus:outline-none border-gray-400 bg-gray-100 border-solid border-2 w-full text-sm"
             :placeholder="placeholder"
+            :value="value"
+            @input="$emit('input', $event.target.value)"
         />
     </div>
 </template>
 <script>
 export default {
-    props: [
-        "type",
-        "placeholder"
-    ]
+    props: ["type", "placeholder", "value"]
 };
 </script>
 <style scoped></style>

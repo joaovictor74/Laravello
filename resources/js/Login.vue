@@ -8,9 +8,17 @@
                 <div class="w-full text-center text-gray-600 font-bold mb-8">
                     Log In to Laravello
                 </div>
-                <form action="">
-                    <FormInput type="email" placeholder="Enter Email" />
-                    <FormInput type="password" placeholder="Enter password" />
+                <form @submit.prevent="authenticate">
+                    <FormInput
+                        v-model="email"
+                        type="email"
+                        placeholder="Enter Email"
+                    />
+                    <FormInput
+                        v-model="password"
+                        type="password"
+                        placeholder="Enter password"
+                    />
                     <FormButton text="Login" />
                 </form>
                 <hr class="bg-gray-400 h-px w-full mb-6" />
@@ -28,10 +36,29 @@
 <script>
 import FormInput from "./components/FormInput.vue";
 import FormButton from "./components/FormButton.vue";
+import Login from "./graphql/Login.gql";
 export default {
     components: {
         FormInput,
         FormButton
+    },
+    data() {
+        return {
+            email: null,
+            password: null
+        };
+    },
+    methods: {
+        authenticate() {
+            const self = this;
+            this.$apollo.mutate({
+                mutation: Login,
+                variables: {
+                    email: this.email,
+                    password: this.password
+                }
+            });
+        }
     }
 };
 </script>

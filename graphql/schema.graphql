@@ -2,10 +2,12 @@
 scalar Date @scalar(class: "Nuwave\\Lighthouse\\Schema\\Types\\Scalars\\Date")
 
 "A datetime string with format `Y-m-d H:i:s`, e.g. `2018-05-23 13:43:32`."
-scalar DateTime @scalar(class: "Nuwave\\Lighthouse\\Schema\\Types\\Scalars\\DateTime")
+scalar DateTime
+    @scalar(class: "Nuwave\\Lighthouse\\Schema\\Types\\Scalars\\DateTime")
 
 "A datetime and timezone string in ISO 8601 format `Y-m-dTH:i:sO`, e.g. `2020-04-20T13:53:12+02:00`."
-scalar DateTimeTz @scalar(class: "Nuwave\\Lighthouse\\Schema\\Types\\Scalars\\DateTimeTz")
+scalar DateTimeTz
+    @scalar(class: "Nuwave\\Lighthouse\\Schema\\Types\\Scalars\\DateTimeTz")
 
 type Query {
     users: [User!]! @paginate(defaultCount: 10)
@@ -14,9 +16,11 @@ type Query {
 }
 
 type Mutation {
-    cardAdd(input:CardAddInput! @spread): Card! @create
-    cardDelete(id:ID!): Card @delete
-    cardUpdate(id: ID!, title:String): Card @update
+    cardAdd(input: CardAddInput! @spread): Card! @create
+    cardDelete(id: ID!): Card @delete
+    cardUpdate(id: ID!, title: String): Card @update
+    login(email: String!, password: String!): User!
+    logout: User @guard
 }
 
 type User {
@@ -25,12 +29,12 @@ type User {
     email: String!
     created_at: DateTime!
     updated_at: DateTime!
-    boards:[Board!]! @hasMany    
-    cards:[Card!]! @hasMany
+    boards: [Board!]! @hasMany
+    cards: [Card!]! @hasMany
 }
 
 type Board {
-    id: ID!    
+    id: ID!
     created_at: DateTime!
     updated_at: DateTime!
     title: String!
@@ -40,7 +44,7 @@ type Board {
 }
 
 type CardList {
-    id: ID!    
+    id: ID!
     created_at: DateTime!
     updated_at: DateTime!
     title: String!
@@ -49,8 +53,8 @@ type CardList {
     board_id: ID!
 }
 
-type Card  {
-    id: ID!    
+type Card {
+    id: ID!
     created_at: DateTime!
     updated_at: DateTime!
     title: String!
@@ -60,8 +64,8 @@ type Card  {
 }
 
 input CardAddInput {
-    title: String!,
-    order: Int!,
-    list_id: ID!,
+    title: String!
+    order: Int!
+    list_id: ID!
     owner_id: ID!
 }
