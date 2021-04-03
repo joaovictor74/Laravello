@@ -5,13 +5,33 @@
                 <span>Laravello</span>
             </div>
             <div class="w-full sm:shadow-xl sm:bg-white sm:py-8 sm:px-12">
+                <div
+                    v-if="errors.length"
+                    class="p-2 bg-red-600 text-gray-100 rounded-sm mb-6 text-sm text-center"
+                >
+                    <div v-for="(error, index) in errors" :key="index">
+                        {{ error.message }}
+                    </div>
+                </div>
                 <div class="w-full text-center text-gray-600 font-bold mb-8">
                     Sign Up to your account
                 </div>
-                <form action="">
-                    <FormInput type="email" placeholder="Enter Email" />
-                    <FormInput type="text" placeholder="Enter the Full Name" />
-                    <FormInput type="password" placeholder="Enter Password" />
+                <form @submit.prevent="register">
+                    <FormInput
+                        v-model="email"
+                        type="email"
+                        placeholder="Enter Email"
+                    />
+                    <FormInput
+                        v-model="name"
+                        type="text"
+                        placeholder="Enter the Full Name"
+                    />
+                    <FormInput
+                        v-model="password"
+                        type="password"
+                        placeholder="Enter Password"
+                    />
                     <FormButton text="Submit" />
                 </form>
                 <hr class="bg-gray-400 h-px w-full mb-6" />
@@ -29,10 +49,39 @@
 <script>
 import FormInput from "./components/FormInput.vue";
 import FormButton from "./components/FormButton.vue";
+import Register from "./graphql/Register.gql";
+import { gqlErrors } from "./utils.js";
 export default {
     components: {
         FormInput,
         FormButton
+    },
+    data() {
+        return {
+            email: null,
+            password: null,
+            name: null,
+            errors: []
+        };
+    },
+    methods: {
+        async register() {
+            this.errors = [];
+            try {
+                const self = this;
+                await this.$apollo.mutate({
+                    mutation: Register,
+                    variables: {
+                        email: this.email,
+                        password: this.password,
+                        name: this.name
+                    }
+                });
+            } catch (error) {
+                this.errors = gqlErrors(error);
+            }
+            this.$router.push({ name: "board" });
+        }
     }
 };
 </script>

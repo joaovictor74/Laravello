@@ -5,6 +5,14 @@
                 <span>Laravello</span>
             </div>
             <div class="w-full sm:shadow-xl sm:bg-white sm:py-8 sm:px-12">
+                <div
+                    v-if="errors.length"
+                    class="p-2 bg-red-600 text-gray-100 rounded-sm mb-6 text-sm text-center"
+                >
+                    <div v-for="(error, index) in errors" :key="index">
+                        {{ error.message }}
+                    </div>
+                </div>
                 <div class="w-full text-center text-gray-600 font-bold mb-8">
                     Log In to Laravello
                 </div>
@@ -37,6 +45,7 @@
 import FormInput from "./components/FormInput.vue";
 import FormButton from "./components/FormButton.vue";
 import Login from "./graphql/Login.gql";
+import { gqlErrors } from "./utils.js";
 export default {
     components: {
         FormInput,
@@ -45,19 +54,25 @@ export default {
     data() {
         return {
             email: null,
-            password: null
+            password: null,
+            errors: []
         };
     },
     methods: {
-        authenticate() {
-            const self = this;
-            this.$apollo.mutate({
-                mutation: Login,
-                variables: {
-                    email: this.email,
-                    password: this.password
-                }
-            });
+        async authenticate() {
+            this.errors = [];
+            try {
+                const self = this;
+                await this.$apollo.mutate({
+                    mutation: Login,
+                    variables: {
+                        email: this.email,
+                        password: this.password
+                    }
+                });
+            } catch (error) {
+                this.errors = gqlErrors(error);
+            }
         }
     }
 };
