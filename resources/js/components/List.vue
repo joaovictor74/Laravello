@@ -18,7 +18,10 @@
             :list="list"
             @added="$emit('card-added', { ...$event, listId: list.id })"
         ></CardAddEditor>
-        <CardAddButton v-else @click="editing = true"></CardAddButton>
+        <CardAddButton
+            v-if="!editing && canAddCard"
+            @click="editing = true"
+        ></CardAddButton>
     </div>
 </template>
 
@@ -26,6 +29,7 @@
 import Card from "./Card.vue";
 import CardAddButton from "./CardAddButton.vue";
 import CardAddEditor from "./CardAddEditor.vue";
+import { mapState } from "vuex";
 
 export default {
     props: {
@@ -40,7 +44,12 @@ export default {
         return {
             editing: false
         };
-    }
+    },
+    computed: mapState({
+        canAddCard(state) {
+            return this.list.board.owner.id == state.user.id;
+        }
+    })
 };
 </script>
 <style scoped>
