@@ -5,14 +5,7 @@
                 <span>Laravello</span>
             </div>
             <div class="w-full sm:shadow-xl sm:bg-white sm:py-8 sm:px-12">
-                <div
-                    v-if="errors.length"
-                    class="p-2 bg-red-600 text-gray-100 rounded-sm mb-6 text-sm text-center"
-                >
-                    <div v-for="(error, index) in errors" :key="index">
-                        {{ error.message }}
-                    </div>
-                </div>
+                <Errors :errors="errors" />
                 <div class="w-full text-center text-gray-600 font-bold mb-8">
                     Log In to Laravello
                 </div>
@@ -44,12 +37,14 @@
 <script>
 import FormInput from "./components/FormInput.vue";
 import FormButton from "./components/FormButton.vue";
+import Errors from "./components/Errors.vue";
 import Login from "./graphql/Login.gql";
 import { gqlErrors } from "./utils.js";
 export default {
     components: {
         FormInput,
-        FormButton
+        FormButton,
+        Errors
     },
     data() {
         return {
@@ -70,6 +65,8 @@ export default {
                         password: this.password
                     }
                 });
+                this.$store.commit("setLoggedIn", true);
+                this.$router.push({ name: "board" });
             } catch (error) {
                 this.errors = gqlErrors(error);
             }

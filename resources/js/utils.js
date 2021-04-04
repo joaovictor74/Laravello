@@ -5,10 +5,19 @@ export function gqlErrors(error) {
             errors.filter(e => !e.internal).concat(error)
             :
             errors;
-    return replaceInternal((error?.graphQLErrors || []).map(err => ({
-        message: err.message,
-        internal: Boolean(!(err?.path?.length))
-    })), {
+    return replaceInternal((error?.graphQLErrors || []).map(err => {
+        if ("validation" === err.extensions?.category) {
+            const validationErrors = err.extensions?.validation || {};
+            return Object.keys(validationErrors).map(key => validationErrors[key]).flat().map(validation => ({
+                message: validation,
+                internal: false
+            }));
+        }
+        return {
+            message: err.message,
+            internal: Boolean(!(err?.path?.length))
+        }
+    }), {
         message: 'test'
-    });
+    }).flat();
 }
