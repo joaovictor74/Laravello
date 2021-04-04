@@ -9,8 +9,8 @@
 
 <script>
 import CardAdd from "./../graphql/CardAdd.gql";
-import { EVENT_CARD_ADDED } from "./../constants.js";
 import CardEditor from "./CardEditor";
+import { EVENT_CARD_ADDED } from "./../constants.js";
 export default {
     components: {
         CardEditor

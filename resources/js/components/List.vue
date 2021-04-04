@@ -23,9 +23,9 @@
 </template>
 
 <script>
-import CardAddEditor from "./CardAddEditor.vue";
-import CardAddButton from "./CardAddButton.vue";
 import Card from "./Card.vue";
+import CardAddButton from "./CardAddButton.vue";
+import CardAddEditor from "./CardAddEditor.vue";
 
 export default {
     props: {
