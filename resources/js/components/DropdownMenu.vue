@@ -1,14 +1,23 @@
 <template>
     <transition name="appear">
-        <div v-if="show" class="dropdown-menu">
+        <div v-on-clickaway="close" v-if="show" class="dropdown-menu">
             <slot></slot>
         </div>
     </transition>
 </template>
 <script>
+import { directive as onClickaway } from "vue-clickaway";
 export default {
     props: {
         show: Boolean
+    },
+    directives: {
+        onClickaway
+    },
+    methods: {
+        close() {
+            this.$emit("closed");
+        }
     }
 };
 </script>
