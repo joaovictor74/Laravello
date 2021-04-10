@@ -4,7 +4,7 @@
             class="header text-white py-1 flex justify-between items-center mb-2"
         >
             <div class="ml-2 w-1/3">
-                <UserBoardsDropdown></UserBoardsDropdown>
+                <UserBoardsDropdown v-if="isLoggedIn"></UserBoardsDropdown>
             </div>
             <div class="text-lg opacity-50 cursor-pointer hover:bg-opacity-75">
                 Laravello
