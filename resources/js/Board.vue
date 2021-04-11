@@ -135,7 +135,8 @@ export default {
 
             event.store.writeQuery({
                 query: BoardQuery,
-                data
+                data,
+                variables: { id: Number(this.board.id) }
             });
         }
     }
