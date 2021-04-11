@@ -49,6 +49,7 @@
                     @card-deleted="updateQueryCache($event)"
                     @card-updated="updateQueryCache($event)"
                 ></List>
+                <ListAddEditor></ListAddEditor>
             </div>
         </div>
     </div>
@@ -68,12 +69,14 @@ import {
     EVENT_CARD_UPDATED
 } from "./constants";
 import List from "./components/List.vue";
+import ListAddEditor from "./components/ListAddEditor.vue";
 import Logout from "./graphql/Logout.gql";
 import { mapState } from "vuex";
 import UserBoardsDropdown from "./components/UserBoardsDropdown.vue";
 export default {
     components: {
         List,
+        ListAddEditor,
         UserBoardsDropdown
     },
     computed: {
