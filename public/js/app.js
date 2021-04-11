@@ -5726,6 +5726,9 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
+//
+//
+//
 
 
 
@@ -5825,6 +5828,10 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
           listById().cards.filter(function (card) {
             return card.id == event.data.id;
           }).title = event.data.title;
+          break;
+
+        case _constants__WEBPACK_IMPORTED_MODULE_3__["EVENT_LIST_ADDED"]:
+          data.board.lists.push(event.data);
           break;
       }
 
@@ -6810,6 +6817,11 @@ __webpack_require__.r(__webpack_exports__);
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var vue_clickaway__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue-clickaway */ "./node_modules/vue-clickaway/dist/vue-clickaway.common.js");
 /* harmony import */ var vue_clickaway__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(vue_clickaway__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _constants_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./../constants.js */ "./resources/js/constants.js");
+/* harmony import */ var _graphql_ListAdd_gql__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./../graphql/ListAdd.gql */ "./resources/js/graphql/ListAdd.gql");
+/* harmony import */ var _graphql_ListAdd_gql__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(_graphql_ListAdd_gql__WEBPACK_IMPORTED_MODULE_2__);
+//
+//
 //
 //
 //
@@ -6847,7 +6859,10 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 
+
+
 /* harmony default export */ __webpack_exports__["default"] = ({
+  props: ["board"],
   data: function data() {
     return {
       editing: false,
@@ -6867,6 +6882,25 @@ __webpack_require__.r(__webpack_exports__);
       this.editing = true;
       this.$nextTick(function () {
         return _this.$refs.title.focus();
+      });
+    },
+    addList: function addList() {
+      var self = this;
+      this.$apollo.mutate({
+        mutation: _graphql_ListAdd_gql__WEBPACK_IMPORTED_MODULE_2___default.a,
+        variables: {
+          title: this.title,
+          board: this.board
+        },
+        update: function update(store, _ref) {
+          var listAdd = _ref.data.listAdd;
+          self.$emit("added", {
+            store: store,
+            data: listAdd,
+            type: _constants_js__WEBPACK_IMPORTED_MODULE_1__["EVENT_LIST_ADDED"]
+          });
+          self.hideEditor();
+        }
       });
     }
   }
@@ -34122,7 +34156,14 @@ var render = function() {
                   })
                 }),
                 _vm._v(" "),
-                _c("ListAddEditor")
+                _c("ListAddEditor", {
+                  attrs: { board: _vm.board.id },
+                  on: {
+                    added: function($event) {
+                      return _vm.updateQueryCache($event)
+                    }
+                  }
+                })
               ],
               2
             )
@@ -34724,26 +34765,24 @@ var render = function() {
       attrs: { placeholder: "Enter a title for this card..." },
       domProps: { value: _vm.value },
       on: {
-        keyup: [
-          function($event) {
-            if (
-              !$event.type.indexOf("key") &&
-              _vm._k($event.keyCode, "esc", 27, $event.key, ["Esc", "Escape"])
-            ) {
-              return null
-            }
-            return _vm.closed($event)
-          },
-          function($event) {
-            if (
-              !$event.type.indexOf("key") &&
-              _vm._k($event.keyCode, "enter", 13, $event.key, "Enter")
-            ) {
-              return null
-            }
-            return _vm.saved($event)
+        keyup: function($event) {
+          if (
+            !$event.type.indexOf("key") &&
+            _vm._k($event.keyCode, "esc", 27, $event.key, ["Esc", "Escape"])
+          ) {
+            return null
           }
-        ],
+          return _vm.closed($event)
+        },
+        keypress: function($event) {
+          if (
+            !$event.type.indexOf("key") &&
+            _vm._k($event.keyCode, "enter", 13, $event.key, "Enter")
+          ) {
+            return null
+          }
+          return _vm.saved($event)
+        },
         input: function($event) {
           return _vm.$emit("input", $event.target.value)
         }
@@ -35080,6 +35119,15 @@ var render = function() {
                 }
                 return _vm.hideEditor($event)
               },
+              keypress: function($event) {
+                if (
+                  !$event.type.indexOf("key") &&
+                  _vm._k($event.keyCode, "enter", 13, $event.key, "Enter")
+                ) {
+                  return null
+                }
+                return _vm.addList($event)
+              },
               input: function($event) {
                 if ($event.target.composing) {
                   return
@@ -35094,7 +35142,8 @@ var render = function() {
               "button",
               {
                 staticClass:
-                  "mt-2 rounded-sm py-1 px-3 bg-blue-700 cursor-pointer hover:bg-blue-500 outline-none text-white"
+                  "mt-2 rounded-sm py-1 px-3 bg-blue-700 cursor-pointer hover:bg-blue-500 outline-none text-white",
+                on: { click: _vm.addList }
               },
               [_vm._v("\n            Add List\n        ")]
             ),
@@ -53887,7 +53936,7 @@ __webpack_require__.r(__webpack_exports__);
 /*!***********************************!*\
   !*** ./resources/js/constants.js ***!
   \***********************************/
-/*! exports provided: EVENT_CARD_ADDED, EVENT_CARD_DELETED, EVENT_CARD_UPDATED */
+/*! exports provided: EVENT_CARD_ADDED, EVENT_CARD_DELETED, EVENT_CARD_UPDATED, EVENT_LIST_ADDED */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -53895,9 +53944,11 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "EVENT_CARD_ADDED", function() { return EVENT_CARD_ADDED; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "EVENT_CARD_DELETED", function() { return EVENT_CARD_DELETED; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "EVENT_CARD_UPDATED", function() { return EVENT_CARD_UPDATED; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "EVENT_LIST_ADDED", function() { return EVENT_LIST_ADDED; });
 var EVENT_CARD_ADDED = 'EVENT_CARD_ADDED';
 var EVENT_CARD_DELETED = 'EVENT_CARD_DELETED';
 var EVENT_CARD_UPDATED = 'EVENT_CARD_UPDATED';
+var EVENT_LIST_ADDED = 'EVENT_LIST_ADDED';
 
 /***/ }),
 
@@ -54559,6 +54610,139 @@ var EVENT_CARD_UPDATED = 'EVENT_CARD_UPDATED';
     module.exports = doc;
     
         module.exports["CardUpdate"] = oneQuery(doc, "CardUpdate");
+        
+
+
+/***/ }),
+
+/***/ "./resources/js/graphql/ListAdd.gql":
+/*!******************************************!*\
+  !*** ./resources/js/graphql/ListAdd.gql ***!
+  \******************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+
+    var doc = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"listAdd"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"title"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}},"directives":[]},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"board"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"ID"}}},"directives":[]}],"directives":[],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"listAdd"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"title"},"value":{"kind":"Variable","name":{"kind":"Name","value":"title"}}},{"kind":"Argument","name":{"kind":"Name","value":"board_id"},"value":{"kind":"Variable","name":{"kind":"Name","value":"board"}}}],"directives":[],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"},"arguments":[],"directives":[]},{"kind":"Field","name":{"kind":"Name","value":"title"},"arguments":[],"directives":[]},{"kind":"Field","name":{"kind":"Name","value":"board_id"},"arguments":[],"directives":[]},{"kind":"Field","name":{"kind":"Name","value":"board"},"arguments":[],"directives":[],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"owner"},"arguments":[],"directives":[],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"},"arguments":[],"directives":[]}]}}]}},{"kind":"Field","name":{"kind":"Name","value":"cards"},"arguments":[],"directives":[],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"},"arguments":[],"directives":[]},{"kind":"Field","name":{"kind":"Name","value":"title"},"arguments":[],"directives":[]},{"kind":"Field","name":{"kind":"Name","value":"order"},"arguments":[],"directives":[]},{"kind":"Field","name":{"kind":"Name","value":"owner"},"arguments":[],"directives":[],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"},"arguments":[],"directives":[]}]}}]}}]}}]}}],"loc":{"start":0,"end":375}};
+    doc.loc.source = {"body":"mutation listAdd($title: String!, $board: ID!) {\r\n    listAdd(title: $title, board_id: $board) {\r\n        id\r\n        title\r\n        board_id\r\n        board {\r\n            owner {\r\n                id\r\n            }\r\n        }\r\n        cards {\r\n            id\r\n            title\r\n            order\r\n            owner {\r\n                id\r\n            }\r\n        }\r\n    }\r\n}\r\n","name":"GraphQL request","locationOffset":{"line":1,"column":1}};
+  
+
+    var names = {};
+    function unique(defs) {
+      return defs.filter(
+        function(def) {
+          if (def.kind !== 'FragmentDefinition') return true;
+          var name = def.name.value
+          if (names[name]) {
+            return false;
+          } else {
+            names[name] = true;
+            return true;
+          }
+        }
+      )
+    }
+  
+
+    // Collect any fragment/type references from a node, adding them to the refs Set
+    function collectFragmentReferences(node, refs) {
+      if (node.kind === "FragmentSpread") {
+        refs.add(node.name.value);
+      } else if (node.kind === "VariableDefinition") {
+        var type = node.type;
+        if (type.kind === "NamedType") {
+          refs.add(type.name.value);
+        }
+      }
+
+      if (node.selectionSet) {
+        node.selectionSet.selections.forEach(function(selection) {
+          collectFragmentReferences(selection, refs);
+        });
+      }
+
+      if (node.variableDefinitions) {
+        node.variableDefinitions.forEach(function(def) {
+          collectFragmentReferences(def, refs);
+        });
+      }
+
+      if (node.definitions) {
+        node.definitions.forEach(function(def) {
+          collectFragmentReferences(def, refs);
+        });
+      }
+    }
+
+    var definitionRefs = {};
+    (function extractReferences() {
+      doc.definitions.forEach(function(def) {
+        if (def.name) {
+          var refs = new Set();
+          collectFragmentReferences(def, refs);
+          definitionRefs[def.name.value] = refs;
+        }
+      });
+    })();
+
+    function findOperation(doc, name) {
+      for (var i = 0; i < doc.definitions.length; i++) {
+        var element = doc.definitions[i];
+        if (element.name && element.name.value == name) {
+          return element;
+        }
+      }
+    }
+
+    function oneQuery(doc, operationName) {
+      // Copy the DocumentNode, but clear out the definitions
+      var newDoc = {
+        kind: doc.kind,
+        definitions: [findOperation(doc, operationName)]
+      };
+      if (doc.hasOwnProperty("loc")) {
+        newDoc.loc = doc.loc;
+      }
+
+      // Now, for the operation we're running, find any fragments referenced by
+      // it or the fragments it references
+      var opRefs = definitionRefs[operationName] || new Set();
+      var allRefs = new Set();
+      var newRefs = new Set();
+
+      // IE 11 doesn't support "new Set(iterable)", so we add the members of opRefs to newRefs one by one
+      opRefs.forEach(function(refName) {
+        newRefs.add(refName);
+      });
+
+      while (newRefs.size > 0) {
+        var prevRefs = newRefs;
+        newRefs = new Set();
+
+        prevRefs.forEach(function(refName) {
+          if (!allRefs.has(refName)) {
+            allRefs.add(refName);
+            var childRefs = definitionRefs[refName] || new Set();
+            childRefs.forEach(function(childRef) {
+              newRefs.add(childRef);
+            });
+          }
+        });
+      }
+
+      allRefs.forEach(function(refName) {
+        var op = findOperation(doc, refName);
+        if (op) {
+          newDoc.definitions.push(op);
+        }
+      });
+
+      return newDoc;
+    }
+
+    module.exports = doc;
+    
+        module.exports["listAdd"] = oneQuery(doc, "listAdd");
         
 
 

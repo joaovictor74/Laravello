@@ -17,10 +17,12 @@
             ref="title"
             placeholder="Enter list title..."
             @keyup.esc="hideEditor"
+            @keypress.enter="addList"
             v-model="title"
         />
         <div class="flex">
             <button
+                @click="addList"
                 class="mt-2 rounded-sm py-1 px-3 bg-blue-700 cursor-pointer hover:bg-blue-500 outline-none text-white"
             >
                 Add List
@@ -36,7 +38,10 @@
 </template>
 <script>
 import { directive as onClickaway } from "vue-clickaway";
+import { EVENT_LIST_ADDED } from "./../constants.js";
+import ListAdd from "./../graphql/ListAdd.gql";
 export default {
+    props: ["board"],
     data() {
         return {
             editing: false,
@@ -53,6 +58,24 @@ export default {
         startEditing() {
             this.editing = true;
             this.$nextTick(() => this.$refs.title.focus());
+        },
+        addList() {
+            const self = this;
+            this.$apollo.mutate({
+                mutation: ListAdd,
+                variables: {
+                    title: this.title,
+                    board: this.board
+                },
+                update(store, { data: { listAdd } }) {
+                    self.$emit("added", {
+                        store,
+                        data: listAdd,
+                        type: EVENT_LIST_ADDED
+                    });
+                    self.hideEditor();
+                }
+            });
         }
     }
 };

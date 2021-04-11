@@ -5,7 +5,7 @@
             :value="value"
             ref="card"
             @keyup.esc="closed"
-            @keyup.enter="saved"
+            @keypress.enter="saved"
             @input="$emit('input', $event.target.value)"
             class="rounded-md shadow-card py-1 px-2 outline-none w-full text-gray-900 text-sm bg-white h-16 resize-none"
         ></textarea>

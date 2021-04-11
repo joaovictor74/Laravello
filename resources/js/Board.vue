@@ -49,7 +49,10 @@
                     @card-deleted="updateQueryCache($event)"
                     @card-updated="updateQueryCache($event)"
                 ></List>
-                <ListAddEditor></ListAddEditor>
+                <ListAddEditor
+                    :board="board.id"
+                    @added="updateQueryCache($event)"
+                ></ListAddEditor>
             </div>
         </div>
     </div>
@@ -66,7 +69,8 @@ import { colorMap500 } from "./utils";
 import {
     EVENT_CARD_ADDED,
     EVENT_CARD_DELETED,
-    EVENT_CARD_UPDATED
+    EVENT_CARD_UPDATED,
+    EVENT_LIST_ADDED
 } from "./constants";
 import List from "./components/List.vue";
 import ListAddEditor from "./components/ListAddEditor.vue";
@@ -133,6 +137,9 @@ export default {
                     listById().cards.filter(
                         card => card.id == event.data.id
                     ).title = event.data.title;
+                    break;
+                case EVENT_LIST_ADDED:
+                    data.board.lists.push(event.data);
                     break;
             }
 
